@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Craps"
         mc:Ignorable="d"
 		Closing="MainWindow_Closing"
-        Title="Craps" Height="443.159" Width="400">
+        Title="Craps" Height="443.159" Width="416.008">
 
 	<Grid>
 
@@ -24,10 +24,11 @@
 
 
 		<ProgressBar x:Name="progBar" Height="15" Width="150" Margin="10,347,232,50" />
-		<Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="177,367,0,0" Height="35" Click="btnStart_Click"/>
+		<Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="193,367,0,0" Height="35" Click="btnStart_Click"/>
+		<Button x:Name="btnReset" Content="Reset Board" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="298,25,0,0" Height="35" Click="btnReset_Click" IsEnabled="False"/>
 		<Button x:Name="btnSim" Content="Simulate 1000 rolls" HorizontalAlignment="Left" VerticalAlignment="Top" Width="116" Margin="10,367,0,0" Height="35" Click="btnSim_Click" IsEnabled="False"/>
-		<Button x:Name="btnRoll" Content="Roll" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="282,367,0,0" Height="35" Click="btnRoll_Click" IsEnabled="False" />
-		<GroupBox x:Name="grpResults" Header="Wins and Losses" HorizontalAlignment="Left" Height="100" Margin="242,262,0,0" VerticalAlignment="Top" Width="150">
+		<Button x:Name="btnRoll" Content="Roll" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="298,367,0,0" Height="35" Click="btnRoll_Click" IsEnabled="False" />
+		<GroupBox x:Name="grpResults" Header="Wins and Losses" HorizontalAlignment="Left" Height="100" Margin="248,262,0,0" VerticalAlignment="Top" Width="150">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="1*" />
@@ -47,7 +48,7 @@
 			</Grid>
 		</GroupBox>
 
-		<GroupBox x:Name="grpRolls" Header="Roll" HorizontalAlignment="Left" Height="100" Margin="242,157,0,0" VerticalAlignment="Top" Width="150">
+		<GroupBox x:Name="grpRolls" Header="Roll" HorizontalAlignment="Left" Height="100" Margin="248,157,0,0" VerticalAlignment="Top" Width="150">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="1*" />
@@ -78,7 +79,7 @@
 		<CheckBox x:Name="chkPlayWithMoney" Content="Play with money" HorizontalAlignment="Left" Margin="27,30,0,0" VerticalAlignment="Top" Width="120"/>
 		
 
-		<GroupBox x:Name="groupBox" Header="Betting" HorizontalAlignment="Left" Height="147" Margin="10,45,0,0" VerticalAlignment="Top" Width="227">
+		<GroupBox x:Name="boxBetting" Header="Betting" HorizontalAlignment="Left" Height="147" Margin="10,45,0,0" VerticalAlignment="Top" Width="227">
 			<Grid>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="1*" />
@@ -94,11 +95,11 @@
 
 				<Label x:Name="lblHowMuchMoney" Grid.Column="0" Grid.Row="0" Content="Starting Cash: $" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
 				<Label x:Name="lblBet" Grid.Column="0" Grid.Row="1" Content="Bet Amount: $" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-				<Label x:Name="lblAccount" Grid.Column="0" Grid.Row="2" Content="Your Account: $" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+				<Label x:Name="lblAccount" Grid.Column="0" Grid.Row="2" Content="Total Winnings: $" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
 
-				<TextBox x:Name="txtStartingCash" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Height="23" Width="100" />
-				<TextBox x:Name="txtBet" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"  Height="23" Width="100"/>
-				<TextBox x:Name="txtAccount" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="23" Width="100" IsReadOnly="True"/>
+				<TextBox x:Name="txtStartingCash" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Height="23" Width="100" Text="0" />
+				<TextBox x:Name="txtBet" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left"  Height="23" Width="100" Text="0"/>
+				<TextBox x:Name="txtAccount" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="23" Width="100" IsReadOnly="True" Text="0" Background="White"/>
 
 
 			</Grid>

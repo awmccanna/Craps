@@ -12,6 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+/*
+ * Alex McCanna
+ * Craps simulator
+ * CSCD 371
+ * This is a simple craps simulator, where you only get to play the Pass line.
+ * Currently the betting system is set up to accomodate the Simulate 1000 runs button I added, which means that the betting system won't stop you from rolling if you go negative.
+ * 
+ */ 
+
 
 namespace Craps
 {
@@ -21,6 +30,7 @@ namespace Craps
 	public partial class MainWindow : Window
 	{
 		private int point, wins, losses;
+		private int bet, winnings, startingCash;
 		private Random die;
 		public MainWindow()
 		{
@@ -31,7 +41,7 @@ namespace Craps
 			die = new Random();
 		}
 
-	#region Button clicks
+#region Button clicks
 		private void AppExit_Click(object sender, EventArgs e)
 		{
 			this.Close();
@@ -39,14 +49,50 @@ namespace Craps
 		
 		private void btnStart_Click(object sender, RoutedEventArgs e)
 		{
-			// TODO check box stuff 
-			resetBoard();
+			if(PlayWithMoney())
+			{
+				winnings = 0;
+				try
+				{
+					startingCash = int.Parse(txtStartingCash.Text);
+					if(startingCash < 0)
+					{
+						throw new Exception();
+					}
+				}
+				catch(Exception)
+				{
+					DisplayError("Cash amount");
+					return;
+				}
+				txtStartingCash.IsReadOnly = true;
+			}
+
+			chkPlayWithMoney.IsEnabled = false;
 			txtRollForPoint.Text = "Roll for point";
+			btnReset.IsEnabled = true;
 			btnRoll.IsEnabled = true;
 			btnSim.IsEnabled = true;
-			btnStart.Content = "Reset Board";
+			btnStart.IsEnabled = false;
 		}
 
+		private void btnReset_Click(object sender, RoutedEventArgs e)
+		{
+			resetBoard();
+			btnReset.IsEnabled = false;
+			btnRoll.IsEnabled = false;
+			btnSim.IsEnabled = false;
+			btnStart.IsEnabled = true;
+
+			txtStartingCash.IsReadOnly = false;
+			chkPlayWithMoney.IsEnabled = true;
+
+			winnings = 0;
+			txtAccount.Text = "0";
+
+
+
+		}
 
 		private void btnRoll_Click(object sender, RoutedEventArgs e)
 		{
@@ -96,11 +142,18 @@ namespace Craps
 
 		#endregion
 
-
-
-		#region Rolls and Outcomes
+#region Rolls and Outcomes
 		private void rollForPoint()
 		{
+			try
+			{
+				bet = int.Parse(txtBet.Text);
+			}
+			catch (Exception)
+			{
+				DisplayError("Bet amount");
+				return;
+			}
 			clearBoard();
 			int d1 = getRoll();
 			int d2 = getRoll();
@@ -126,6 +179,15 @@ namespace Craps
 
 		private void gameRoll()
 		{
+			try
+			{
+				bet = int.Parse(txtBet.Text);
+			}
+			catch (Exception)
+			{
+				DisplayError("Bet amount");
+				return;
+			}
 			int r1 = getRoll();
 			int r2 = getRoll();
 			txtD1.Text = r1.ToString();
@@ -147,11 +209,22 @@ namespace Craps
 
 		private int getRoll()
 		{
-			return die.Next(1, 6);
+			return die.Next(1, 7);
 		}
 
 		private void loser()
 		{
+			if(PlayWithMoney())
+			{
+				winnings = winnings - bet;
+				txtAccount.Text = winnings.ToString();
+				if(winnings < 0)
+				{
+					txtAccount.Background = Brushes.Red;
+				}
+			}
+
+
 			txtWinOrLoss.Text = "House wins";
 			losses++;
 			txtLosses.Text = losses.ToString();
@@ -162,6 +235,17 @@ namespace Craps
 
 		private void winner()
 		{
+			if(PlayWithMoney())
+			{
+				winnings = winnings + bet;
+				txtAccount.Text = winnings.ToString();
+				if (winnings > 0)
+				{
+					txtAccount.Background = Brushes.Green;
+				}
+			}
+
+
 			txtWinOrLoss.Text = "Player wins!";
 			wins++;
 			txtWins.Text = wins.ToString();
@@ -171,7 +255,7 @@ namespace Craps
 		}
 		#endregion
 
-		#region Board Changes
+#region Board Changes
 		/*
 		 * Fully resets the board, including win-loss record.
 		 */
@@ -186,8 +270,6 @@ namespace Craps
 			clearBoard();
 		}
 
-		
-
 		/*
 		 * Clears the current point and dice rolls.
 		 */
@@ -200,7 +282,7 @@ namespace Craps
 		}
 		#endregion
 
-		#region Misc
+#region Misc
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			MessageBoxButton btns = MessageBoxButton.YesNo;
@@ -210,6 +292,16 @@ namespace Craps
 			{
 				e.Cancel = true;
 			}
+		}
+
+		private bool PlayWithMoney()
+		{
+			return chkPlayWithMoney.IsChecked == (bool?)true;
+		}
+
+		private void DisplayError(string v)
+		{
+			MessageBox.Show(v + " is invalid.");
 		}
 		#endregion
 
